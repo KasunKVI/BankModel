@@ -26,7 +26,7 @@ def encode_category(value, category_list):
 def predict():
     try:
         data = request.get_json(force=True)
-        print(data)
+
         # Extract and encode input data
         input_data = [
             data['age'],
@@ -38,12 +38,10 @@ def predict():
             encode_category(data['loan'], category_mappings['loan'])
         ]
 
-        print(input_data)
+
         # Make prediction
         predictions = model.predict([input_data])
         prediction_list = predictions.tolist()
-
-        print(prediction_list)
 
         return jsonify({'prediction': prediction_list})
 
