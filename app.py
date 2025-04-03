@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request,render_template, jsonify
 import joblib
 
 model = joblib.load('MLLogistic.joblib')
@@ -14,6 +14,10 @@ category_mappings = {
     'housing': ['no', 'yes'],
     'loan': ['no', 'yes']
 }
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 # Convert categories to numerical codes
 def encode_category(value, category_list):
