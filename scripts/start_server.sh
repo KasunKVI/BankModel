@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /home/ec2-user/bankmodel
+cd /home/ec2-user/bank-model
 pip install -r requirements.txt
-pkill -f flask
-nohup python app.py > app.log 2>&1 &
+pkill -f gunicorn
+gunicorn --bind 0.0.0.0:5000 app:app -D
