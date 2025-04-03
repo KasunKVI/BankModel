@@ -12,9 +12,9 @@ version: 0.2
 #      - echo "Starting Flask build..."
 #      - python -m unittest discover tests
 #      - echo "Build completed."
-artifacts:
-  files:
-    - '**/*'
+files:
+  - source: /
+    destination: /home/ec2-user/bank-model
 hooks:
   ApplicationStart:
     - location: scripts/start_server.sh
