@@ -33,7 +33,7 @@ def predict():
 
         # Extract and encode input data
         input_data = [
-            data['age'],
+            int(data['age']),
             encode_category(data['job'], category_mappings['job']),
             encode_category(data['marital'], category_mappings['marital']),
             encode_category(data['education'], category_mappings['education']),
@@ -41,7 +41,6 @@ def predict():
             encode_category(data['housing'], category_mappings['housing']),
             encode_category(data['loan'], category_mappings['loan'])
         ]
-
 
         # Make prediction
         predictions = model.predict([input_data])
