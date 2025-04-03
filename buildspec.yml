@@ -1,17 +1,17 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      python: 3.9
-    commands:
-      - pip install --upgrade pip
-      - pip install -r requirements.txt
-  build:
-    commands:
-      - echo "Starting Flask build..."
-      - python -m unittest discover tests
-      - echo "Build completed."
+#  install:
+#    runtime-versions:
+#      python: 3.9
+#    commands:
+#      - pip install --upgrade pip
+#      - pip install -r requirements.txt
+#  build:
+#    commands:
+#      - echo "Starting Flask build..."
+#      - python -m unittest discover tests
+#      - echo "Build completed."
 artifacts:
   files:
     - '**/*'
