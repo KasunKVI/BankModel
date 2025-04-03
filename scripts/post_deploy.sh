@@ -16,7 +16,5 @@ nohup gunicorn --bind 0.0.0.0:5000 app:app -D &
 
 echo "Deployment successful" > /home/ec2-user/bank-model/deploy.log
 
-# Example: Restarting a service if necessary
-# sudo systemctl restart some-service
 
 echo "Post-deployment tasks completed."
