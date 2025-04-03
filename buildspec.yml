@@ -1,8 +1,12 @@
-version: 0.0
-os: linux
-files:
-  - source: /
-    destination: /home/ec2-user/bank-model
+version: 0.2
+#
+#os: linux
+#files:
+#  - source: /
+#    destination: /home/ec2-user/bankmodel
+artifacts:
+  files:
+    - '**/*'
 hooks:
   AfterInstall:
     - location: scripts/start_server.sh
