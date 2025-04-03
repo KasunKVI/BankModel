@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        label {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #5cb85c;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #4cae4c;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .error {
+            color: red;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Prediction Form</h1>
+    <form id="predictForm">
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+        </div>
+
+        <div class="form-group">
+            <label for="job">Job:</label>
+            <select id="job" name="job" required>
+                <option value="admin.">admin.</option>
+                <option value="blue-collar">blue-collar</option>
+                <option value="entrepreneur">entrepreneur</option>
+                <option value="housemaid">housemaid</option>
+                <option value="management">management</option>
+                <option value="retired">retired</option>
+                <option value="self-employed">self-employed</option>
+                <option value="services">services</option>
+                <option value="student">student</option>
+                <option value="technician">technician</option>
+                <option value="unemployed">unemployed</option>
+                <option value="unknown">unknown</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="marital">Marital Status:</label>
+            <select id="marital" name="marital" required>
+                <option value="divorced">divorced</option>
+                <option value="married">married</option>
+                <option value="single">single</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="education">Education:</label>
+            <select id="education" name="education" required>
+                <option value="primary">primary</option>
+                <option value="secondary">secondary</option>
+                <option value="tertiary">tertiary</option>
+                <option value="unknown">unknown</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="default">Default Payment (yes/no):</label>
+            <select id="default" name="default" required>
+                <option value="no">no</option>
+                <option value="yes">yes</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="housing">Housing Loan (yes/no):</label>
+            <select id="housing" name="housing" required>
+                <option value="no">no</option>
+                <option value="yes">yes</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="loan">Personal Loan (yes/no):</label>
+            <select id="loan" name="loan" required>
+                <option value="no">no</option>
+                <option value="yes">yes</option>
+            </select>
+        </div>
+
+        <button type="submit">Submit Prediction</button>
+    </form>
+
+    <div id="predictionResult" class="result" style="display: none;"></div>
+    <div id="errorMessage" class="error" style="display: none;"></div>
+</div>
+
+<script>
+    document.getElementById('predictForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = {
+            age: document.getElementById('age').value,
+            job: document.getElementById('job').value,
+            marital: document.getElementById('marital').value,
+            education: document.getElementById('education').value,
+            default: document.getElementById('default').value,
+            housing: document.getElementById('housing').value,
+            loan: document.getElementById('loan').value
+        };
+
+        fetch(' http://54.152.217.212:5000/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.prediction) {
+                document.getElementById('predictionResult').style.display = 'block';
+                document.getElementById('predictionResult').innerHTML = 'Prediction: ' + data.prediction;
+                document.getElementById('errorMessage').style.display = 'none';
+            } else if (data.error) {
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorMessage').innerHTML = 'Error: ' + data.error;
+                document.getElementById('predictionResult').style.display = 'none';
+            }
+        })
+        .catch(error => {
+            document.getElementById('errorMessage').style.display = 'block';
+            document.getElementById('errorMessage').innerHTML = 'Error: Unable to make prediction.';
+            document.getElementById('predictionResult').style.display = 'none';
+        });
+    });
+</script>
+
+</body>
+</html>
