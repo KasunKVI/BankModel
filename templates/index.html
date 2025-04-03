@@ -4,110 +4,237 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prediction Form</title>
+    <!-- SweetAlert2 for better alerts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.4.8/sweetalert2.all.min.js"></script>
     <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #4361ee;
+            --accent-color: #4cc9f0;
+            --dark-color: #1a1a2e;
+            --light-color: #e9ecef;
+            --success-color: #06d6a0;
+            --error-color: #ef476f;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #eef2f7;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--dark-color), #000);
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            color: #fff;
         }
 
         .container {
             width: 90%;
-            max-width: 500px;
-            background-color: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            max-width: 550px;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3),
+                        0 0 20px rgba(74, 153, 255, 0.2),
+                        inset 0 0 2px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         h1 {
             text-align: center;
-            color: #333;
-            margin-bottom: 20px;
+            color: var(--accent-color);
+            margin-bottom: 30px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: relative;
+            text-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            position: relative;
         }
 
         label {
-            font-size: 1.1rem;
-            font-weight: bold;
+            font-size: 0.9rem;
+            font-weight: 500;
             display: block;
-            margin-bottom: 5px;
-            color: #444;
+            margin-bottom: 8px;
+            color: var(--light-color);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         select, input[type="number"] {
             width: 100%;
-            padding: 12px;
+            padding: 12px 15px;
             font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
+            transition: all 0.3s;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234cc9f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(76, 201, 240, 0.3);
         }
 
         select:hover, input[type="number"]:hover {
-            border-color: #5cb85c;
+            border-color: var(--accent-color);
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
         }
 
         button {
             width: 100%;
-            padding: 12px;
-            background: linear-gradient(to right, #5cb85c, #4cae4c);
+            padding: 14px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             color: white;
             font-size: 1.1rem;
-            font-weight: bold;
+            font-weight: 600;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(74, 153, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
         }
 
         button:hover {
-            background: linear-gradient(to right, #4cae4c, #3d8b3d);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(74, 153, 255, 0.4);
+        }
+
+        button:active {
+            transform: translateY(1px);
         }
 
         .result, .error {
-            margin-top: 20px;
+            margin-top: 25px;
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 8px;
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+            animation: fadeIn 0.5s;
         }
 
         .result {
-            background-color: #e3fcef;
-            color: #2d8f57;
-            border: 1px solid #5cb85c;
+            background-color: rgba(6, 214, 160, 0.2);
+            color: var(--success-color);
+            border: 1px solid rgba(6, 214, 160, 0.3);
             display: none;
         }
 
         .error {
-            background-color: #f8d7da;
-            color: #a94442;
-            border: 1px solid #f5c6cb;
+            background-color: rgba(239, 71, 111, 0.2);
+            color: var(--error-color);
+            border: 1px solid rgba(239, 71, 111, 0.3);
             display: none;
         }
 
-        @media (max-width: 600px) {
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(74, 153, 255, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(74, 153, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(74, 153, 255, 0); }
+        }
+
+        @media (max-width: 768px) {
             .container {
-                padding: 20px;
                 width: 95%;
+                padding: 20px;
+                margin: 20px;
             }
 
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
+            }
+
+            label {
+                font-size: 0.85rem;
+            }
+
+            select, input[type="number"] {
+                padding: 10px;
             }
 
             button {
+                padding: 12px;
                 font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            button {
+                padding: 10px;
             }
         }
     </style>
@@ -115,75 +242,81 @@
 <body>
 
 <div class="container">
-    <h1>Prediction Form</h1>
+    <h1>AI Prediction System</h1>
     <form id="predictForm">
         <div class="form-group">
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" required>
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" placeholder="Enter your age (max 80)" required>
         </div>
 
         <div class="form-group">
-            <label for="job">Job:</label>
+            <label for="job">Occupation</label>
             <select id="job" name="job" required>
-                <option value="admin.">admin.</option>
-                <option value="blue-collar">blue-collar</option>
-                <option value="entrepreneur">entrepreneur</option>
-                <option value="housemaid">housemaid</option>
-                <option value="management">management</option>
-                <option value="retired">retired</option>
-                <option value="self-employed">self-employed</option>
-                <option value="services">services</option>
-                <option value="student">student</option>
-                <option value="technician">technician</option>
-                <option value="unemployed">unemployed</option>
-                <option value="unknown">unknown</option>
+                <option value="" disabled selected>Select your occupation</option>
+                <option value="admin.">Administrative</option>
+                <option value="blue-collar">Blue-collar</option>
+                <option value="entrepreneur">Entrepreneur</option>
+                <option value="housemaid">Housemaid</option>
+                <option value="management">Management</option>
+                <option value="retired">Retired</option>
+                <option value="self-employed">Self-employed</option>
+                <option value="services">Services</option>
+                <option value="student">Student</option>
+                <option value="technician">Technician</option>
+                <option value="unemployed">Unemployed</option>
+                <option value="unknown">Unknown</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="marital">Marital Status:</label>
+            <label for="marital">Marital Status</label>
             <select id="marital" name="marital" required>
-                <option value="divorced">divorced</option>
-                <option value="married">married</option>
-                <option value="single">single</option>
+                <option value="" disabled selected>Select your marital status</option>
+                <option value="divorced">Divorced</option>
+                <option value="married">Married</option>
+                <option value="single">Single</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="education">Education:</label>
+            <label for="education">Education Level</label>
             <select id="education" name="education" required>
-                <option value="primary">primary</option>
-                <option value="secondary">secondary</option>
-                <option value="tertiary">tertiary</option>
-                <option value="unknown">unknown</option>
+                <option value="" disabled selected>Select your education</option>
+                <option value="primary">Primary</option>
+                <option value="secondary">Secondary</option>
+                <option value="tertiary">Tertiary</option>
+                <option value="unknown">Unknown</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="default">Default Payment (yes/no):</label>
+            <label for="default">Default Payment</label>
             <select id="default" name="default" required>
-                <option value="no">no</option>
-                <option value="yes">yes</option>
+                <option value="" disabled selected>Have you defaulted on payments?</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="housing">Housing Loan (yes/no):</label>
+            <label for="housing">Housing Loan</label>
             <select id="housing" name="housing" required>
-                <option value="no">no</option>
-                <option value="yes">yes</option>
+                <option value="" disabled selected>Do you have a housing loan?</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="loan">Personal Loan (yes/no):</label>
+            <label for="loan">Personal Loan</label>
             <select id="loan" name="loan" required>
-                <option value="no">no</option>
-                <option value="yes">yes</option>
+                <option value="" disabled selected>Do you have a personal loan?</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
             </select>
         </div>
 
-        <button type="submit">Submit for Prediction</button>
+        <button type="submit">Generate Prediction</button>
     </form>
 
     <div id="predictionResult" class="result"></div>
@@ -194,14 +327,49 @@
     document.getElementById('predictForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
+        // Get form values
+        const age = document.getElementById('age').value;
+        const job = document.getElementById('job').value;
+        const marital = document.getElementById('marital').value;
+        const education = document.getElementById('education').value;
+        const defaultPayment = document.getElementById('default').value;
+        const housing = document.getElementById('housing').value;
+        const loan = document.getElementById('loan').value;
+
+        // Validate age
+        if (age > 80) {
+            Swal.fire({
+                title: 'Invalid Age',
+                text: 'Age must be 80 or below',
+                icon: 'error',
+                confirmButtonColor: '#3a86ff',
+                background: '#1a1a2e',
+                color: '#fff'
+            });
+            return;
+        }
+
+        // Validate all fields are selected
+        if (!age || !job || !marital || !education || !defaultPayment || !housing || !loan) {
+            Swal.fire({
+                title: 'Incomplete Form',
+                text: 'Please fill out all fields',
+                icon: 'warning',
+                confirmButtonColor: '#3a86ff',
+                background: '#1a1a2e',
+                color: '#fff'
+            });
+            return;
+        }
+
         const formData = {
-            age: document.getElementById('age').value,
-            job: document.getElementById('job').value,
-            marital: document.getElementById('marital').value,
-            education: document.getElementById('education').value,
-            default: document.getElementById('default').value,
-            housing: document.getElementById('housing').value,
-            loan: document.getElementById('loan').value
+            age: age,
+            job: job,
+            marital: marital,
+            education: education,
+            default: defaultPayment,
+            housing: housing,
+            loan: loan
         };
 
         fetch('http://54.152.217.212:5000/predict', {
