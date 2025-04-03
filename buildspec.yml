@@ -12,3 +12,8 @@ hooks:
     - location: scripts/start_server.sh
       timeout: 300
       runas: ec2-user
+
+  PostInstall:
+    - location: scripts/post_deploy.sh
+      timeout: 300
+      runas: ec2-user
